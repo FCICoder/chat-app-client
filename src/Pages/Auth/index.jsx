@@ -54,7 +54,6 @@ const Auth = () => {
       setUserInfo(res.data.user);
       navigate('/profile');
     }).catch((err) => {
-      console.log("hii😀");
       toast.error(err.response.data.msg , {id: "signup"});
     })
   };
