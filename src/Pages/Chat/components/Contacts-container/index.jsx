@@ -1,3 +1,4 @@
+import ProfileInfo from "./components/profile-info";
 
 const ContactsContainer = () => {
   return (
@@ -14,7 +15,8 @@ const ContactsContainer = () => {
         <div className="flex items-center justify-between pr-10">
           <Title text={"Channels"} />
         </div>
-      </div>  
+      </div> 
+      <ProfileInfo /> 
     </div>
   )
 }
