@@ -19,7 +19,7 @@ import Lottie from "react-lottie";
 import { animtionDefaultOptions, getColor } from "@/lib/utils";
 import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
-import { SEARCH_CONTACTS_ROUTE } from "@/utils/constants";
+import { HOST, SEARCH_CONTACTS_ROUTE } from "@/utils/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppStore } from "@/store";
 const NewDM = () => {
@@ -95,7 +95,7 @@ const NewDM = () => {
                     <Avatar className="h-8 w-8  rounded-full overflow-hidden">
                       {contact?.image ? (
                         <AvatarImage
-                          className="object-cover w-full h-full bg-black"
+                          className="object-cover w-full h-full bg-black rounded-full"
                           src={`${HOST}/${contact?.image}`}
                           alt="profile"
                         />
