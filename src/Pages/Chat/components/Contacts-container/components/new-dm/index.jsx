@@ -21,7 +21,9 @@ import { toast } from "sonner";
 import { apiClient } from "@/lib/api-client";
 import { SEARCH_CONTACTS_ROUTE } from "@/utils/constants";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAppStore } from "@/store";
 const NewDM = () => {
+  const {setSelectedChatData , setSelectedChatType} = useAppStore();
   const [openNewContactModel, setOpenNewContactModel] = useState(false);
   const [searchedContacts, setSearchedContacts] = useState([]);
   const searchContacts = async (searchTerm) => {
@@ -42,6 +44,13 @@ const NewDM = () => {
       console.log(err);
       toast.error(err);
     }
+  };
+
+  const selectNewContact = (contact) => {
+    setOpenNewContactModel(false);
+    setSelectedChatType('contact');
+    setSelectedChatData(contact);
+    setSearchedContacts([]);
   };
   return (
     <>
@@ -78,6 +87,7 @@ const NewDM = () => {
             <div className="flex flex-col gap-5">
               {searchedContacts.map((contact, index) => (
                 <div
+                  onClick={()=>selectNewContact(contact)}
                   key={index}
                   className="flex gap-3 items-center cursor-pointer"
                 >
