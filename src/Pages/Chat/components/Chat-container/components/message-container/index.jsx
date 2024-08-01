@@ -1,11 +1,33 @@
+import { apiClient } from "@/lib/api-client";
 import { useAppStore } from "@/store";
+import { GET_ALL_MESSAGES_ROUTE } from "@/utils/constants";
 import moment from "moment";
 import { useEffect, useRef } from "react";
 
 const MessageContainer = () => {
   const scrollRef = useRef();
-  const { selectedChatData, selectedChatType, userInfo, selectedChatMessages } =
+  const { selectedChatData, selectedChatType, userInfo, selectedChatMessages , setSelectedChatMessages } =
     useAppStore();
+
+    useEffect(() =>{
+      const getMessages = async() =>{
+        try{
+          const res = await apiClient.post(GET_ALL_MESSAGES_ROUTE,{id:selectedChatData._id} , {withCredentials:true});
+          
+          if(res.data.messages){
+            setSelectedChatMessages(res.data.messages);
+          }
+
+        }catch(err){
+          console.log(err);
+        }
+      }
+      if(selectedChatData._id){
+        if(selectedChatType === 'contact'){
+          getMessages();
+        }
+      }
+    },[selectedChatData, selectedChatType,setSelectedChatMessages])
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
@@ -19,10 +41,7 @@ const MessageContainer = () => {
       lastDate = messageDate;
 
       return (
-        <div
-          key={index}
-          
-        >
+        <div key={index}>
           {showDate && (
             <div className="text-sm text-center text-gray-500 my-2">
               {moment(msg.timeStamp).format("LL")}
@@ -51,10 +70,9 @@ const MessageContainer = () => {
           {message.content}
         </div>
       )}
-      <div className="text-xs text-gray-600">{
-        moment(message.timeStamp).format('LT')
-
-}</div>
+      <div className="text-xs text-gray-600">
+        {moment(message.timeStamp).format("LT")}
+      </div>
     </div>
   );
   return (
