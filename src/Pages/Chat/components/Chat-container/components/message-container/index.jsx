@@ -169,7 +169,7 @@ const MessageContainer = () => {
             <img
               src={`${HOST}/${imageUrl}`}
               alt=""
-              className="lg:h-[75vh] w-full bg-cover "
+              className="sm:h-[75vh] w-full bg-cover "
             />
           </div>
           <div className="flex gap-5 fixed top-0 mt-5">

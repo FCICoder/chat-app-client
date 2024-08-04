@@ -3,6 +3,7 @@ import { Avatar } from "./avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { HOST } from "@/utils/constants";
 import { getColor } from "@/lib/utils";
+import { useEffect } from "react";
 
 const ContactList = ({ contacts, isChannel = false }) => {
   const {
@@ -11,8 +12,10 @@ const ContactList = ({ contacts, isChannel = false }) => {
     setSelectedChatData,
     setSelectedChatType,
     selectedChatType,
+    
   } = useAppStore();
-
+  console.log(contacts);
+  
   const handleClick = (contact) => {
     if (isChannel) setSelectedChatType("channel");
     else setSelectedChatType("contact");
@@ -21,8 +24,22 @@ const ContactList = ({ contacts, isChannel = false }) => {
       setSelectedChatMessages([]);
     }
   };
+
+  useEffect(()=>{
+    console.log(selectedChatType);
+    if(selectedChatType === "contact"){
+        setSelectedChatMessages([]);
+      }else if(selectedChatType === "channel"){
+        setSelectedChatMessages([]);
+      }
+    
+    
+  },[selectedChatType === undefined])
   return (
-    <div className="mt-5">
+    <>
+    {
+      selectedChatType === "channel" || selectedChatType === "contact" || selectedChatType === undefined ?
+      <div className="mt-5">
       {contacts?.map((contact , index) => (
         // console.log(contact)
         <div 
@@ -69,7 +86,8 @@ const ContactList = ({ contacts, isChannel = false }) => {
           </div>
         </div>
       ))}
-    </div>
+    </div> : ''}
+    </>
   );
 };
 

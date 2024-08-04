@@ -2,26 +2,46 @@ import { useEffect } from "react";
 import NewDM from "./components/new-dm";
 import ProfileInfo from "./components/profile-info";
 import { apiClient } from "@/lib/api-client";
-import { GET_DM_CONTACTS_ROUTE } from "@/utils/constants";
+import { GET_DM_CONTACTS_ROUTE, GET_USER_CHANNELS_ROUTE } from "@/utils/constants";
 import { useAppStore } from "@/store";
 import ContactList from "@/components/ui/contact-list";
 import CreateChannel from "./components/create-channel";
 
 const ContactsContainer = () => {
 
-  const {setDirectMessagesContacts , directMessagesContacts , channels} = useAppStore();
-
+  const {setDirectMessagesContacts , directMessagesContacts , channels , setChannels , selectedChatType , selectedChatData} = useAppStore();
+console.log(selectedChatType,directMessagesContacts);
+const getContacts = async () => {
+  const res = await apiClient.get(GET_DM_CONTACTS_ROUTE , {withCredentials: true});
+  if(res.status === 200){
+    setDirectMessagesContacts(res.data.contacts);  // set the contacts to the state of the app store
+  }
+};
+const getChannels = async () => {
+  const res = await apiClient.get(GET_USER_CHANNELS_ROUTE , {withCredentials: true});
+  if(res.status === 201){
+    setChannels(res.data.channels);  // set the contacts to the state of the app store
+  }
+};
   useEffect(()=>{
-    const getContacts = async () => {
-      const res = await apiClient.get(GET_DM_CONTACTS_ROUTE , {withCredentials: true});
-      if(res.status === 200){
-        setDirectMessagesContacts(res.data.contacts);  // set the contacts to the state of the app store
-        console.log(res.data.contacts);
-      }
-    };
+    getContacts();  
+    getChannels();
+  },[]);
+  useEffect(()=>{
+    if(selectedChatType === undefined){
+      getContacts();  
+      getChannels();
+    }
+    else if(selectedChatType === 'contact'){
+      getContacts();  
+    getChannels();
+    }else{
+      getContacts();  
+    getChannels();
+    }
+    
+  },[selectedChatType&&selectedChatData]);
 
-    getContacts();
-  },[])
 
   return (
     <div className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full">
