@@ -20,6 +20,8 @@ const getContacts = async () => {
 const getChannels = async () => {
   const res = await apiClient.get(GET_USER_CHANNELS_ROUTE , {withCredentials: true});
   if(res.status === 201){
+    console.log(res.data.channels);
+    
     setChannels(res.data.channels);  // set the contacts to the state of the app store
   }
 };
@@ -40,7 +42,7 @@ const getChannels = async () => {
     getChannels();
     }
     
-  },[selectedChatType&&selectedChatData]);
+  },[selectedChatType === undefined &&selectedChatData ]);
 
 
   return (

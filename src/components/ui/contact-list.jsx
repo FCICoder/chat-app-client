@@ -4,6 +4,7 @@ import { AvatarImage } from "@radix-ui/react-avatar";
 import { HOST } from "@/utils/constants";
 import { getColor } from "@/lib/utils";
 import { useEffect } from "react";
+import { apiClient } from "@/lib/api-client";
 
 const ContactList = ({ contacts, isChannel = false }) => {
   const {
@@ -35,6 +36,7 @@ const ContactList = ({ contacts, isChannel = false }) => {
     
     
   },[selectedChatType === undefined])
+
   return (
     <>
     {
